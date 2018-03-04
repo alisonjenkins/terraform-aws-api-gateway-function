@@ -22,3 +22,16 @@ resource "aws_lambda_permission" "apigw_lambda_invoke_permission" {
 
   source_arn = "arn:aws:execute-api:${var.region}:${var.account_number}:${var.rest_api_id}/*/${var.http_method}${var.resource_path}"
 }
+
+resource "aws_api_gateway_method_response" "response" {
+  rest_api_id          = "${var.rest_api_id}"
+  resource_id          = "${var.resource_id}"
+  http_method          = "${var.http_method}"
+  status_code          = "200"
+  response_models      = {
+    "application/json" = "Empty"
+  }
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin" = true
+  }
+}
